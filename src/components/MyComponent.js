@@ -1,24 +1,17 @@
 // class component
 // function component
-import React from 'react';
+import React from "react";
+import UserInfor from "./UserInfor";
 
-class MyComponent extends React.Component{
-
-    state = {
-        name: 'Quan Libo',
-        address: 'Buon Ma Thuot',
-        age: '22'
-    };
-
-    // JSX
-    render(){
-        return (
-            <div>
-                My name is {this.state.name} and I'm from {this.state.address}
-                
-            </div>
-        );
-    }
+class MyComponent extends React.Component {
+  // JSX
+  render() {
+    return (
+      <div>
+        <UserInfor />
+      </div>
+    );
+  }
 }
 
 export default MyComponent;
