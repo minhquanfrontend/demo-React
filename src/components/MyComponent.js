@@ -1,7 +1,7 @@
 // class component
 // function component
 import React from "react";
-import UserInfor from "./UserInfor";
+import AddUserInfor from "./AddUserInfor";
 import DisplayInfor from "./DisplayInfor";
 
 class MyComponent extends React.Component {
@@ -24,15 +24,38 @@ class MyComponent extends React.Component {
       },
     ]
   }
+  handleAddNewUser = (userObj)=>{
+    console.log(">> Check data form parent",userObj);
+    this.setState({
+      listUsers:[
+        userObj, 
+        ...this.state.listUsers,
+        
+      ]
+    })
+    
+  }
+  handleDeleteUser = ( userId) =>{
+    let listUsersClone = [
+      ...this.state.listUsers
+    ]
+    listUsersClone = listUsersClone.filter(item => item.id !== userId)
+    this.setState({
+      listUsers:listUsersClone
+    })
+  }
   // JSX
   render() {
     //DRY: don't reapet youself
     return (
       <div>
-        <UserInfor />
+        <AddUserInfor
+          handleAddNewUser={this.handleAddNewUser}
+          />
         <br/>
         <DisplayInfor
         
+          handleDeleteUser={this.handleDeleteUser}
           listUsers={this.state.listUsers}
         
         />
