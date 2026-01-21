@@ -9,6 +9,7 @@ import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import User from "./components/User/User";
 import Admin from "./components/Admin/Admin";
+import HomePage from "./components/Home/HomePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,9 +18,10 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route index element={<HomePage />} />
           <Route path="users" element={<User />} />
-          <Route path="admins" element={<Admin />} />
         </Route>
+          <Route path="admins" element={<Admin />} />
       </Routes>
     </BrowserRouter>
     {/* </React.StrictMode> */}
