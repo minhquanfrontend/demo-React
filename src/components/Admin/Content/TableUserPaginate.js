@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
-import { getAllUsers } from "../../../services/apiService";
+import ReactPaginate from "react-paginate";
+import { useState, useEffect } from "react";
 
-const TableUser = (props) => {
-  const { listUsers } = props;
+// Invoke when user click to request another page.
+const TableUSerPaginate = (props) => {
+  const { listUsers, pageCount } = props;
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    props.fetchListUsersWithPaginate(+event.selected + 1);
+    console.log(
+      `User requested page number ${event.selected}, which is offset `,
+    );
+  };
   // const listUsers = props.listUsers
-
   return (
     <>
       <table className="table table-hover table-bordered">
@@ -56,8 +64,32 @@ const TableUser = (props) => {
           )}
         </tbody>
       </table>
+      <div className="d-flex justify-content-center">
+        <ReactPaginate
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPages
+          Displayed={2}
+          pageCount={pageCount}
+          previous
+          Label="< previous"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+        />
+      </div>
     </>
   );
 };
 
-export default TableUser;
+export default TableUSerPaginate;
