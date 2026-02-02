@@ -1,5 +1,5 @@
-import axios from '../utils/axiosCustomize'
-const postCreateNewUser = (email,password,username, role, image) => {
+import axios from "../utils/axiosCustomize";
+const postCreateNewUser = (email, password, username, role, image) => {
   // submit validate
   const data = new FormData();
   data.append("email", email);
@@ -8,15 +8,13 @@ const postCreateNewUser = (email,password,username, role, image) => {
   data.append("role", role);
   data.append("userImage", image);
   return axios.post("/api/v1/participant", data);
-
 };
 
-const getAllUsers =()=>{
+const getAllUsers = () => {
   return axios.get("/api/v1/participant/all");
+};
 
-}
-
-const putUpdateUser = (id,username, role, image) => {
+const putUpdateUser = (id, username, role, image) => {
   // submit validate
   const data = new FormData();
   data.append("id", id);
@@ -24,14 +22,26 @@ const putUpdateUser = (id,username, role, image) => {
   data.append("role", role);
   data.append("userImage", image);
   return axios.put("/api/v1/participant", data);
-
 };
-const deleteUser =(userId)=>{
-  return axios.delete("/api/v1/participant", {data : {id: userId} });
+const deleteUser = (userId) => {
+  return axios.delete("/api/v1/participant", { data: { id: userId } });
+};
 
-}
-
-const getUserWithPaginate =(page,limit)=>{
+const getUserWithPaginate = (page, limit) => {
   return axios.get(`/api/v1/participant?page=${page}&limit=${limit}`);
-}
-export  {postCreateNewUser, getAllUsers, putUpdateUser, deleteUser , getUserWithPaginate}
+};
+const postLogin = (email, password) => {
+  return axios.post(`/api/v1/login`, { email, password });
+};
+const postRegister = (email, password,username) => {
+  return axios.post(`/api/v1/register`, { email, password,username });
+};
+export {
+  postCreateNewUser,
+  getAllUsers,
+  putUpdateUser,
+  deleteUser,
+  getUserWithPaginate,
+  postLogin,
+  postRegister,
+};
