@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const account = useSelector((state) => state.user.account);
+
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -46,8 +47,8 @@ const Header = () => {
               </>
             ) : (
               <NavDropdown title="Settings" id="basic-nav-dropdown">
-                <NavDropdown.Item>Profile</NavDropdown.Item>
                 <NavDropdown.Item>Log Out</NavDropdown.Item>
+                <NavDropdown.Item>Profile</NavDropdown.Item>
               </NavDropdown>
             )}
           </Nav>

@@ -1,44 +1,62 @@
-.login-container{
-    .header{
+.login-container {
+    .loader-icon {
+        margin-right: 7px;
+        top: 2px;
+        animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+        from {
+            transform: scale(1) rotate(0deg);
+        }
+
+        to {
+            transform: scale(1) rotate(360deg);
+        }
+    }
+
+    .header {
         height: 44px;
         padding: 0 100px;
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        button{
+
+        button {
             border: none;
             padding: 3px 16px;
             margin-left: 16px;
             border-radius: 5px;
             background-color: #f9f9f9;
             border: 1px solid;
-            &:hover{
+
+            &:hover {
                 background-color: #fff;
             }
         }
-        
+
     }
 
-    .title{
+    .title {
         font-size: 26px;
         padding: 20px 0;
         text-align: center;
     }
-    
-    .welcome{
+
+    .welcome {
         font-size: 22px;
         padding: 10px 0;
         text-align: center;
 
     }
 
-    .content-form{
-        input{
+    .content-form {
+        input {
             margin-bottom: 16px;
             margin-top: 4px;
         }
 
-        button{
+        button {
             width: 100%;
             height: 46px;
             border: none;
@@ -46,11 +64,20 @@
             margin: 22px 0;
             color: #fff;
             background-color: #000;
+
+            &:disabled {
+                background-color: #ddd;
+                color: #afafaf;
+                cursor: no-drop;
+
+            }
         }
-        .back{
+
+        .back {
             cursor: pointer;
-            
+
         }
+
         .pass-group {
             position: relative;
 
