@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { getDataQuiz } from "../../services/apiService";
+import { getDataQuiz, postSubmitQuiz } from "../../services/apiService";
 import _ from "lodash";
 import "./DetailQuiz.scss";
 import Question from "./Question";
+import ModalResult from "./ModalResult";
 const DetailQuiz = (props) => {
   const params = useParams();
   const quizId = params.id;
@@ -11,13 +12,14 @@ const DetailQuiz = (props) => {
 
   const [dataQuiz, setDataQuiz] = useState([]);
   const [index, setIndex] = useState(0);
+  const [isShowModalResult, setIsShowModalResult] = useState(false);
+  const [dataModalResult, setDataModalResult] = useState({});
 
   useEffect(() => {
     fetchQuestions();
   }, [quizId]);
   const fetchQuestions = async () => {
     let res = await getDataQuiz(quizId);
-    console.log(">> check ", res);
 
     if (res && res.EC === 0) {
       let raw = res.DT;
@@ -37,17 +39,15 @@ const DetailQuiz = (props) => {
             item.answers.isSelected = false;
             answers.push(item.answers);
 
-            console.log("item answers:", item.answers);
+            // console.log("item answers:", item.answers);
           });
-          console.log("value", value, "key", key);
+          // console.log("value", value, "key", key);
           return { questionId: key, answers, questionDescription, image };
         })
         .value();
-      console.log(data);
       setDataQuiz(data);
     }
   };
-  console.log(">> check data quiz ", dataQuiz);
   const handlePrev = () => {
     if (index - 1 < 0) return;
     setIndex(index - 1);
@@ -69,7 +69,6 @@ const DetailQuiz = (props) => {
         return item;
       });
       question.answers = b;
-      // console.log(b);
     }
     let index = dataQuizClone.findIndex(
       (item) => +item.questionId === +questionId,
@@ -79,7 +78,57 @@ const DetailQuiz = (props) => {
       setDataQuiz(dataQuizClone);
     }
   };
+  const handleFinishQuiz = async () => {
+    //   {
+    //     "quizId": 1,
+    //     "answers": [
+    //         {
+    //             "questionId": 1,
+    //             "userAnswerId": [3]
+    //         },
+    //         {
+    //             "questionId": 2,
+    //             "userAnswerId": [6]
+    //         }
+    //     ]
+    // }
+    console.log(">>> Check data before submit : ", dataQuiz);
+    let payload = {
+      quizId: +quizId,
+      answers: [],
+    };
+    let answers = [];
 
+    if (dataQuiz && dataQuiz.length > 0) {
+      dataQuiz.forEach((question) => {
+        let questionId = question.questionId;
+        let userAnswerId = [];
+        question.answers.forEach((a) => {
+          if (a.isSelected === true) {
+            userAnswerId.push(a.id);
+          }
+        });
+        answers.push({
+          questionId: +questionId,
+          userAnswerId: userAnswerId,
+        });
+      });
+      payload.answers = answers;
+      // submit api
+      let res = await postSubmitQuiz(payload);
+      console.log("check res:", res);
+      if (res && res.EC === 0) {
+        setDataModalResult({
+          countCorrect: res.DT.countCorrect,
+          countTotal: res.DT.countTotal,
+          quizData: res.DT.quizData,
+        });
+        setIsShowModalResult(true);
+      } else {
+        alert("something wrongs...");
+      }
+    }
+  };
   return (
     <div className="detail-quiz-container">
       <div className="left-content">
@@ -105,12 +154,20 @@ const DetailQuiz = (props) => {
           <button className="btn btn-primary" onClick={() => handleNext()}>
             Next
           </button>
-          <button className="btn btn-warning" onClick={() => handleNext()}>
+          <button
+            className="btn btn-warning"
+            onClick={() => handleFinishQuiz()}
+          >
             Finish
           </button>
         </div>
       </div>
       <div className="right-content">count down</div>
+      <ModalResult
+        show={isShowModalResult}
+        setShow={setIsShowModalResult}
+        dataModalResult={dataModalResult}
+      />
     </div>
   );
 };
